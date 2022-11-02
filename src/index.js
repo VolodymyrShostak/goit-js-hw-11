@@ -7,10 +7,11 @@ const loadBtnRef = document.querySelector('.load-more');
 
 formSubmitRef.addEventListener('submit', onSubmitForm);
 // loadBtnRef.addEventListener('click', onClickLoadBtn);
-
+loadBtnRef.classList.add('hidden');
 // обробка події сабміту форми
 async function onSubmitForm(e) {
   e.preventDefault();
+  galleryRef.innerHTML = '';
   let searchQuery = e.currentTarget.searchQuery.value.trim();
   console.log(searchQuery);
   if (!searchQuery) {
@@ -19,58 +20,40 @@ async function onSubmitForm(e) {
     );
   }
 
-  cteateImageCard(searchQuery);
+  renderMarkup(searchQuery);
 }
-async function cteateImageCard(name) {
+
+async function renderMarkup(name) {
   try {
     const data = await getImages(name);
-    console.log(data);
     const arrHits = data.hits;
-    console.log(arrHits);
     if (arrHits.length === 0) {
       Notiflix.Notify.warning(
         'Sorry, there are no images matching your search query. Please try again.'
       );
-      renderMarkup(searchQuery);
+      return;
+    }
+
+    totalHits = data.totalHits;
+    // nextPage += 1;
+    // calcHits += arrHits.length;
+
+    const markup = createMarkup(arrHits);
+
+    galleryRef.insertAdjacentHTML('beforeend', markup);
+
+    if (calcHits >= totalHits) {
+      Notiflix.Notify.warning(
+        "We're sorry, but you've reached the end of search results."
+      );
+
       return;
     }
   } catch (error) {
     console.log(error, error.message);
   }
-  //   const amountHits = data.totalHits;
-  async function renderMarkup(name) {
-    try {
-      const data = await getImages(name);
-      const arrData = data.hits;
-      if (arrData.length === 0) {
-        Notiflix.Notify.warning(
-          'Sorry, there are no images matching your search query. Please try again.'
-        );
-        return;
-      }
-
-      totalHits = data.totalHits;
-      nextPage += 1;
-      calcHits += arrHits.length;
-
-      const markup = createMarkup(arrHits);
-
-      galleryRef.insertAdjacentHTML('beforeend', markup);
-
-      showsButton();
-
-      if (calcHits >= totalHits) {
-        Notiflix.Notify.warning(
-          "We're sorry, but you've reached the end of search results."
-        );
-        hiddenLoadBtn();
-        return;
-      }
-    } catch (error) {
-      console.log(error, error.message);
-    }
-  }
 }
+
 function createMarkup(arr) {
   return arr
     .map(

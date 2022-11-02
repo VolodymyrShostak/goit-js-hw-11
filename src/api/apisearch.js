@@ -22,5 +22,3 @@ export async function getImages(searchQuery) {
     console.log(error);
   }
 }
-
-console.log(getImages());
