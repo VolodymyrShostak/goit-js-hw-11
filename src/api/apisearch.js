@@ -23,4 +23,4 @@ export async function getImages(searchQuery) {
   }
 }
 
-export default getImages;
+console.log(getImages());
