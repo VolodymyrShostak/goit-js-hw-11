@@ -1,6 +1,7 @@
 @import '~node_modules/modern-normalize/modern-normalize.css';
 
 .heder {
+  display: flex;
   background-color: aqua;
   width: 100%;
   height: 50px;
@@ -12,4 +13,46 @@
 }
 .hidden {
   display: none;
+}
+.gallery {
+  margin-top: 20px;
+  margin-left: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+}
+.photo-card {
+  display: flex;
+  width: 360px;
+  height: 320px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 1px rgba(0, 0, 0, 0.14),
+    0px 2px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 0px 0px 4px 4px;
+  padding: 5px;
+  padding-bottom: 20px;
+}
+
+.is-hidden {
+  pointer-events: none;
+  opacity: 0;
+}
+.info {
+  display: flex;
+  justify-content: space-between;
+  height: 60px;
+  gap: 10px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.photo-card_text {
+  font-weight: 200;
 }

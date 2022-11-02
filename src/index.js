@@ -7,6 +7,8 @@ const loadBtnRef = document.querySelector('.load-more');
 
 formSubmitRef.addEventListener('submit', onSubmitForm);
 // loadBtnRef.addEventListener('click', onClickLoadBtn);
+let page = 1;
+let amountHit = 0;
 loadBtnRef.classList.add('hidden');
 // обробка події сабміту форми
 async function onSubmitForm(e) {
@@ -20,12 +22,12 @@ async function onSubmitForm(e) {
     );
   }
 
-  renderMarkup(searchQuery);
+  renderMarkup(searchQuery, page);
 }
 
-async function renderMarkup(name) {
+async function renderMarkup(name, page) {
   try {
-    const data = await getImages(name);
+    const data = await getImages(name, page);
     const arrHits = data.hits;
     if (arrHits.length === 0) {
       Notiflix.Notify.warning(
@@ -35,14 +37,13 @@ async function renderMarkup(name) {
     }
 
     totalHits = data.totalHits;
-    // nextPage += 1;
-    // calcHits += arrHits.length;
-
+    page += 1;
+    amountHit += 1;
     const markup = createMarkup(arrHits);
 
     galleryRef.insertAdjacentHTML('beforeend', markup);
 
-    if (calcHits >= totalHits) {
+    if (amountHit >= totalHits) {
       Notiflix.Notify.warning(
         "We're sorry, but you've reached the end of search results."
       );
@@ -56,22 +57,13 @@ async function renderMarkup(name) {
 
 function createMarkup(arr) {
   return arr
-    .map(
-      ({
-        webformatURL,
-        largeImageURL,
-        tags,
-        likes,
-        views,
-        comments,
-        downloads,
-      }) => {
-        return `
+    .map(({ webformatURL, tags, likes, views, comments, downloads }) => {
+      return `
  <div class="photo-card">
-        <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+        <img src="${webformatURL}" alt="${tags}" loading="lazy" width="300" height="250" />
         <div class="info">
           <p class="info-item">
-            <b>Likes</b><span>
+            <b class="photo-card_text">Likes</b><span>
             ${likes}</span>
           </p>
           <p class="info-item">
@@ -88,7 +80,6 @@ function createMarkup(arr) {
           </p>
         </div>
       </div>`;
-      }
-    )
+    })
     .join('');
 }
