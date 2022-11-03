@@ -14,6 +14,7 @@ loadBtnRef.classList.add('hidden');
 
 async function onSubmitForm(e) {
   e.preventDefault();
+  page = 1;
   galleryRef.innerHTML = '';
   searchQuery = e.currentTarget.searchQuery.value.trim();
   if (!searchQuery) {
@@ -40,11 +41,12 @@ async function renderMarkup(name, page) {
       return;
     }
     totalHits = data.totalHits;
-    amountHit += 1;
+    amountHit = 40 * page;
     const markup = createMarkup(arrHits);
     galleryRef.insertAdjacentHTML('beforeend', markup);
     loadBtnRef.classList.remove('hidden');
     if (amountHit >= totalHits) {
+      loadBtnRef.classList.add('hidden');
       Notiflix.Notify.warning(
         "We're sorry, but you've reached the end of search results."
       );
