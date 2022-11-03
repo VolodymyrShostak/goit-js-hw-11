@@ -22,3 +22,4 @@ export async function getImages(name, page) {
     console.log(error);
   }
 }
+export default AMOUNT_PAGE;
