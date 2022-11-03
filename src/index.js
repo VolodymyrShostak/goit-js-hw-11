@@ -19,15 +19,11 @@ let amountHit = 0;
 let searchQuery = '';
 loadBtnRef.classList.add('hidden');
 
-formSubmitRef.onfocus = function () {
-  submitBtnRef.classList.remove('hidden');
-};
-
 async function onSubmitForm(e) {
   e.preventDefault();
   page = 1;
   galleryRef.innerHTML = '';
-
+  loadBtnRef.classList.add('hidden');
   searchQuery = e.currentTarget.searchQuery.value.trim();
   if (!searchQuery) {
     Notiflix.Notify.warning(
@@ -42,7 +38,6 @@ async function onSubmitForm(e) {
 async function onClickLoadBtn() {
   page += 1;
   loadBtnRef.classList.add('hidden');
-
   await renderMarkup(searchQuery, page);
 }
 
@@ -52,14 +47,12 @@ async function renderMarkup(name, page) {
     const arrHits = data.hits;
     if (arrHits.length === 0) {
       loadBtnRef.classList.add('hidden');
-
       Notiflix.Notify.warning(
         'Sorry, there are no images matching your search query. Please try again.'
       );
       return;
     }
     const totalHits = data.totalHits;
-
     const markup = createMarkup(arrHits);
     amountHit = AMOUNT_PAGE * page;
     galleryRef.insertAdjacentHTML('beforeend', markup);
@@ -70,8 +63,10 @@ async function renderMarkup(name, page) {
       Notiflix.Notify.warning(
         "We're sorry, but you've reached the end of search results."
       );
-
       return;
+    }
+    if (totalHits < AMOUNT_PAGE) {
+      loadBtnRef.classList.add('hidden');
     }
   } catch (error) {
     console.log(error, error.message);
