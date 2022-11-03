@@ -36,17 +36,32 @@
 }
 .info {
   display: flex;
-  justify-content: space-between;
-  height: 60px;
+  text-align: center;
   gap: 10px;
 }
 
 .info-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  font-size: 12px;
+  text-align: center;
 }
 
 .photo-card_text {
   font-weight: 400;
+}
+.photo-card_data {
+  font-weight: 600;
+}
+.span {
+  display: flex;
+}
+.load-more {
+  padding: 10px;
+  background-color: rgb(62, 158, 53);
+  border-color: inherit;
+  border-radius: 10px;
+  color: white;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+  margin-bottom: 10px;
 }

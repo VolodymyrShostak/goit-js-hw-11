@@ -1,5 +1,7 @@
 import { getImages } from './api/apisearch';
 import Notiflix from 'notiflix';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const formSubmitRef = document.querySelector('#search-form');
 const galleryRef = document.querySelector('.gallery');
@@ -7,6 +9,8 @@ const loadBtnRef = document.querySelector('.load-more');
 
 formSubmitRef.addEventListener('submit', onSubmitForm);
 loadBtnRef.addEventListener('click', onClickLoadBtn);
+let simpleLightbox = new SimpleLightbox('.gallery a');
+
 let page = 1;
 let amountHit = 0;
 let searchQuery = '';
@@ -21,13 +25,15 @@ async function onSubmitForm(e) {
     Notiflix.Notify.warning(
       'Sorry, there are no images matching your search query. Please try again.'
     );
+    return;
   }
   await renderMarkup(searchQuery, page);
+  simpleLightbox.refresh();
 }
 
-async function onClickLoadBtn(e) {
+async function onClickLoadBtn() {
   page += 1;
-  renderMarkup(searchQuery, page);
+  await renderMarkup(searchQuery, page);
 }
 
 async function renderMarkup(name, page) {
@@ -44,6 +50,7 @@ async function renderMarkup(name, page) {
     amountHit = 40 * page;
     const markup = createMarkup(arrHits);
     galleryRef.insertAdjacentHTML('beforeend', markup);
+    simpleLightbox.refresh();
     loadBtnRef.classList.remove('hidden');
     if (amountHit >= totalHits) {
       loadBtnRef.classList.add('hidden');
@@ -60,10 +67,21 @@ async function renderMarkup(name, page) {
 
 function createMarkup(arr) {
   return arr
-    .map(({ webformatURL, tags, likes, views, comments, downloads }) => {
-      return `
+    .map(
+      ({
+        largeImageURL,
+        webformatURL,
+        tags,
+        likes,
+        views,
+        comments,
+        downloads,
+      }) => {
+        return `
  <div class="photo-card">
+ <a class="card-ref" href="${largeImageURL}">
         <img src="${webformatURL}" alt="${tags}" loading="lazy" width="300" height="250" />
+        </a>
         <div class="info">
           <p class="info-item">
             <b class="photo-card_text">Likes</b><span class="photo-card_data">
@@ -83,6 +101,7 @@ function createMarkup(arr) {
           </p>
         </div>
       </div>`;
-    })
+      }
+    )
     .join('');
 }
