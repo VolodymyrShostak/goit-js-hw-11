@@ -6,22 +6,26 @@ const galleryRef = document.querySelector('.gallery');
 const loadBtnRef = document.querySelector('.load-more');
 
 formSubmitRef.addEventListener('submit', onSubmitForm);
-// loadBtnRef.addEventListener('click', onClickLoadBtn);
+loadBtnRef.addEventListener('click', onClickLoadBtn);
 let page = 1;
 let amountHit = 0;
+let searchQuery = '';
 loadBtnRef.classList.add('hidden');
-// обробка події сабміту форми
+
 async function onSubmitForm(e) {
   e.preventDefault();
   galleryRef.innerHTML = '';
-  let searchQuery = e.currentTarget.searchQuery.value.trim();
-  console.log(searchQuery);
+  searchQuery = e.currentTarget.searchQuery.value.trim();
   if (!searchQuery) {
     Notiflix.Notify.warning(
       'Sorry, there are no images matching your search query. Please try again.'
     );
   }
+  await renderMarkup(searchQuery, page);
+}
 
+async function onClickLoadBtn(e) {
+  page += 1;
   renderMarkup(searchQuery, page);
 }
 
@@ -35,14 +39,11 @@ async function renderMarkup(name, page) {
       );
       return;
     }
-
     totalHits = data.totalHits;
-    page += 1;
     amountHit += 1;
     const markup = createMarkup(arrHits);
-
     galleryRef.insertAdjacentHTML('beforeend', markup);
-
+    loadBtnRef.classList.remove('hidden');
     if (amountHit >= totalHits) {
       Notiflix.Notify.warning(
         "We're sorry, but you've reached the end of search results."
@@ -63,19 +64,19 @@ function createMarkup(arr) {
         <img src="${webformatURL}" alt="${tags}" loading="lazy" width="300" height="250" />
         <div class="info">
           <p class="info-item">
-            <b class="photo-card_text">Likes</b><span>
+            <b class="photo-card_text">Likes</b><span class="photo-card_data">
             ${likes}</span>
           </p>
           <p class="info-item">
-            <b>Views</b><span>
+            <b class="photo-card_text">Views</b><span class="photo-card_data" >
             ${views}</span>
           </p>
           <p class="info-item">
-            <b>Comments</b><span>
+            <b class="photo-card_text">Comments</b><span class="photo-card_data">
             ${comments}</span>
           </p>
           <p class="info-item">
-            <b>Downloads</b><span>
+            <b class="photo-card_text">Downloads</b><span class="photo-card_data">
             ${downloads}</span>
           </p>
         </div>

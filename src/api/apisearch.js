@@ -4,7 +4,8 @@ const BASE_URL = 'https://pixabay.com/api/';
 const API_KEY = '31023163-94386fc9f1fd647d996722da2';
 const AMOUNT_PAGE = 40;
 
-export async function getImages(searchQuery) {
+export async function getImages(name, page) {
+  console.log(page);
   try {
     const response = await axios.get(BASE_URL, {
       params: {
@@ -12,8 +13,8 @@ export async function getImages(searchQuery) {
         image_type: 'photo',
         orientation: 'horizontal',
         safesearch: 'true',
-        page: 1,
-        q: searchQuery,
+        page: page,
+        q: name,
         per_page: AMOUNT_PAGE,
       },
     });

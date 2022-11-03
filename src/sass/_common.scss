@@ -16,11 +16,10 @@
 }
 .gallery {
   margin-top: 20px;
-  margin-left: 30px;
+  margin-left: 50px;
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  align-items: center;
 }
 .photo-card {
   display: flex;
@@ -34,11 +33,6 @@
   border-radius: 0px 0px 4px 4px;
   padding: 5px;
   padding-bottom: 20px;
-}
-
-.is-hidden {
-  pointer-events: none;
-  opacity: 0;
 }
 .info {
   display: flex;
@@ -54,5 +48,5 @@
 }
 
 .photo-card_text {
-  font-weight: 200;
+  font-weight: 400;
 }
