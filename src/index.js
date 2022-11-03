@@ -1,5 +1,5 @@
 import { getImages } from './api/apisearch';
-import { createMarkup } from './templates/imgcard';
+import createMarkup from './templates/imgcard';
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
